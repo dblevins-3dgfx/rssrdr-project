@@ -18,6 +18,10 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
+    UPLOAD_FOLDER = '/tmp'
+
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER   
+
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
@@ -25,9 +29,13 @@ def create_app(test_config=None):
         pass
 
     from . import db
-    db.init_app(app)
+    db.init_app(app) 
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import index
+    app.register_blueprint(index.bp)
+    app.add_url_rule('/', endpoint='index')
     
     return app

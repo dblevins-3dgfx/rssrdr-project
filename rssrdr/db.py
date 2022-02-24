@@ -4,6 +4,7 @@ import click
 from flask import current_app, g
 from flask.cli import with_appcontext
 
+import opml
 
 def get_db():
     if 'db' not in g:
@@ -30,13 +31,26 @@ def init_db():
         db.executescript(f.read().decode('utf8'))
 
 
+def import_opml(filename):
+    db = get_db()
+    outline = opml.parse(filename)
+
+    for topic in outline:
+        for site in topic:
+            try:
+                db.execute("INSERT INTO feed (title, url, topic) VALUES (?, ?, ?)",
+                (site.title, site.xmlUrl, topic.title))
+                db.commit()
+            except db.IntegrityError:
+                pass
+                
+                
 @click.command('init-db')
 @with_appcontext
 def init_db_command():
     """Clear the existing data and create new tables."""
     init_db()
     click.echo('Initialized the database.')
-
 
 def init_app(app):
     app.teardown_appcontext(close_db)

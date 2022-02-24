@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block header %}
+RSS Reader
+{% endblock %}
+
+{% block content %}
+<h1>Available Feeds</h1>
+<ul>
+    {% for feed in feeds %}
+    <li><a href="{{ feed.url }}">{{ feed.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

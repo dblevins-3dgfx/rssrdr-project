@@ -1,0 +1,48 @@
+@startuml
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "user" {
+  *id : integer <<generated>>
+  --
+  *name : text <<unique>> <<not null>>
+  *password : text
+}
+
+entity "feed" {
+  *id : integer <<generated>>
+  --
+  *title : text
+  *url   : text
+  topic : text
+}
+
+entity "subscription" {
+  *user_id : integer <<FK>>
+  *feed_id : integer <<FK>>
+}
+
+entity "article" {
+  *id : integer <<generated>>
+  --
+  *feed_id : integer <<FK>>
+  *title : text
+  *url : text
+  date_time : number
+}
+
+entity "status" {
+  *user_id : integer <<FK>>
+  *article_id : integer <<FK>>
+  is_read : boolean
+}
+
+user ||--o{ subscription
+feed ||--|| subscription
+article }o--|| feed
+status }o--|| user
+status ||--|| article
+@enduml

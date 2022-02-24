@@ -5,3 +5,15 @@ CREATE TABLE user (
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL
 );
+
+CREATE TABLE feed (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  url TEXT UNIQUE NOT NULL,
+  topic TEXT
+);
+
+CREATE TABLE subscription (
+  user_id INTEGER REFERENCES user (id),
+  feed_id INTEGER REFERENCES feed (id)
+);

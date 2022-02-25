@@ -31,18 +31,27 @@ def init_db():
         db.executescript(f.read().decode('utf8'))
 
 
-def import_opml(filename):
-    db = get_db()
-    outline = opml.parse(filename)
+def traverse_opml(node, parent, visit):
+    visit(node, parent)
+    for child in node:
+        traverse_opml(child, node, visit)
 
-    for topic in outline:
-        for site in topic:
-            try:
-                db.execute("INSERT INTO feed (title, url, topic) VALUES (?, ?, ?)",
-                (site.title, site.xmlUrl, topic.title))
-                db.commit()
-            except db.IntegrityError:
-                pass
+def visit_opml(node, parent):
+    if hasattr(node, 'type') and node.type == 'rss':
+        db = get_db()
+        title = node.title
+        url = node.xmlUrl
+        topic = parent.title
+        try:
+            db.execute("INSERT INTO feed (title, url, topic) VALUES (?, ?, ?)", (title, url, topic))
+            db.commit()
+        except db.IntegrityError:
+            pass
+
+
+def import_opml(filename):
+    outline = opml.parse(filename)
+    traverse_opml(outline, None, visit_opml)
                 
                 
 @click.command('init-db')

@@ -8,7 +8,9 @@ RSS Reader
 <h1>Articles</h1>
 <ul>
     {% for article in articles %}
-    <li><a href="{{ article.link }}">{{ article.title }}</li>
-  {% endfor %}
+    <li> 
+        <a href="{{ article.link }}">{{ article.title }}</a> 
+    </li>
+    {% endfor %}
 </ul>
 {% endblock %}

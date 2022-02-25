@@ -5,10 +5,10 @@ RSS Reader
 {% endblock %}
 
 {% block content %}
-<h1>Available Feeds</h1>
+<h1>Articles</h1>
 <ul>
-    {% for feed in feeds %}
-    <li><a href="feed/{{ feed.id }}">{{ feed.title }}</a></li>
+    {% for article in articles %}
+    <li><a href="{{ article.link }}">{{ article.title }}</li>
   {% endfor %}
 </ul>
 {% endblock %}

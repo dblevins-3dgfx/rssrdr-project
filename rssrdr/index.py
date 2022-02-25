@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, flash, request, redirect, current_
 from werkzeug.utils import secure_filename
 from rssrdr.auth import login_required
 from rssrdr.db import import_opml, get_db
+import feedparser
 
 bp = Blueprint('index', __name__)
 
@@ -10,7 +11,7 @@ bp = Blueprint('index', __name__)
 @login_required
 def index():
     db = get_db()
-    feeds = db.execute("SELECT url, title FROM feed")
+    feeds = db.execute("SELECT id, title FROM feed")
     return render_template('index.html', feeds=feeds)
 
 
@@ -51,3 +52,10 @@ def handle_import():
     </form>
     '''    
     
+@bp.route('/feed/<int:feed_id>')
+@login_required
+def feed(feed_id):
+    db = get_db()
+    feedUrl = db.execute("SELECT url FROM feed WHERE id == ?", (feed_id,)).fetchone()
+    rssFeed = feedparser.parse(feedUrl['url'])
+    return render_template('feed.html', articles=rssFeed.entries)

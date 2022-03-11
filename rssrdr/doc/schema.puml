@@ -6,14 +6,14 @@ hide circle
 skinparam linetype ortho
 
 entity "user" {
-  *id : integer <<generated>>
+  *user_id : integer <<generated>>
   --
   *name : text <<unique>> <<not null>>
   *password : text
 }
 
 entity "feed" {
-  *id : integer <<generated>>
+  *feed_id : integer <<generated>>
   --
   *title : text
   *url   : text
@@ -26,7 +26,7 @@ entity "subscription" {
 }
 
 entity "article" {
-  *id : integer <<generated>>
+  *article_id : integer <<generated>>
   --
   *feed_id : integer <<FK>>
   *title : text

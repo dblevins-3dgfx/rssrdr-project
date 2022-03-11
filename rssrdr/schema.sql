@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL
 );
 
 CREATE TABLE feed (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  feed_id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
   url TEXT UNIQUE NOT NULL,
   topic TEXT
 );
 
 CREATE TABLE subscription (
-  user_id INTEGER REFERENCES user (id),
-  feed_id INTEGER REFERENCES feed (id)
+  user_id INTEGER REFERENCES user (user_id),
+  feed_id INTEGER REFERENCES feed (feed_id)
 );

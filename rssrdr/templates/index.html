@@ -8,7 +8,7 @@ RSS Reader
 <h1>Available Feeds</h1>
 <ul>
     {% for feed in feeds %}
-    <li><a href="feed/{{ feed.id }}">{{ feed.title }}</a></li>
+    <li><a href="feed/{{ feed.feed_id }}">{{ feed.title }}</a></li>
   {% endfor %}
 </ul>
 {% endblock %}
